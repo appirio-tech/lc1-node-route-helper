@@ -26,12 +26,11 @@ npm install git+ssh://git@gitlab.com:spanhawk/serenity-route-helper.git --save
 
 The ```--save``` flag automatically add it as dependency in package.json
 
-Add serenity-route-helper in your code via ```require``` and create an instance to use it.
+Add serenity-route-helper in your code via ```require``` use it.
 
 
 ```
-var serenityRouteHelper = require('serenity-route-helper');
-var routeHelper = new serenityRouteHelper();
+var routeHelper = require('serenity-route-helper');
 ```
 
 The module exports an error handler function which can be used as a middleware.
@@ -46,6 +45,9 @@ Method description
 - addErrorMessage
 - addValidationError
 - renderJson
+- errorHandler
+- getRefIdField
+- isFormData
 
 The modules exports some common properties to be used across applications, they are defined below
 
@@ -78,8 +80,7 @@ Property Description
 Sample implementation examples are explained below
 
 ```
-var serenityRouteHelper = require('serenity-route-helper');
-var routeHelper = new serenityRouteHelper();
+var routeHelper = require('serenity-route-helper');
 
 // some app.js part
 // add global error handler
@@ -94,16 +95,15 @@ NOTE: Add the renderJson middleware at the end of chain. All the request process
 serenityRouteHelper can be used directly in other files. It exposes middleware functions which can be added to express ```request``` instance anywhere in code
 
 ```
-var serenityRouteHelper = require('serenity-route-helper');
-var routeHelper = new serenityRouteHelper();
+var routeHelper = require('serenity-route-helper');
 
 // controller validation
 // some validation logic
 if(invalid) {
   // the below will define and add an error object to request instance.
-    // As explained above the default http status code for validation error is 400
+  // As explained above the default http status code for validation error is 400
   routeHelper.addValidationError(req, 'name is required');
-    // calling next here will invoke the renderJson
-    next();
+  // calling next here will invoke the renderJson
+  next();
 }
 ```

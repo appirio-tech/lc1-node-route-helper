@@ -8,7 +8,7 @@
 'use strict';
 
 var should = require('should');
-var serenityRouteHelper = require('../');
+var routeHelper;
 var _ = require('lodash');
 
 /**
@@ -16,9 +16,9 @@ var _ = require('lodash');
  */
 describe('<Module Test>', function() {
   describe('<Initiatization tests>', function() {
-    it('should not throw error while instantiation', function(done) {
+    it('should not throw error while require', function(done) {
       try {
-        var routeHelper = new serenityRouteHelper();
+        routeHelper = require('../');
         done();
       } catch(e) {
         should.not.exist(e);
@@ -27,10 +27,6 @@ describe('<Module Test>', function() {
     });
   });
   describe('<Functionality tests>', function() {
-    var routeHelper;
-    before(function() {
-      routeHelper = new serenityRouteHelper();
-    });
 
     it('HTTP STATUS CODES should be exported properly', function(done) {
       routeHelper.HTTP_OK.should.equal(200);

@@ -11,22 +11,15 @@
 var _ = require('lodash');
 
 /**
- * Constructor function
- */
-var serenityRouteHelper = function() {
-
-};
-
-/**
  * Exporting HTTP STATUS CODES
  */
-serenityRouteHelper.prototype.HTTP_OK = 200;
-serenityRouteHelper.prototype.HTTP_NOT_FOUND = 404;
-serenityRouteHelper.prototype.HTTP_UNAUTHORIZED = 401;
-serenityRouteHelper.prototype.HTTP_FORBIDDEN = 403;
-serenityRouteHelper.prototype.HTTP_CREATED = 201;
-serenityRouteHelper.prototype.HTTP_BAD_REQUEST = 400;
-serenityRouteHelper.prototype.HTTP_INTERNAL_SERVER_ERROR = 500;
+var HTTP_OK = exports.HTTP_OK = 200;
+var HTTP_NOT_FOUND = exports.HTTP_NOT_FOUND = 404;
+exports.HTTP_UNAUTHORIZED = 401;
+exports.HTTP_FORBIDDEN = 403;
+exports.HTTP_CREATED = 201;
+var HTTP_BAD_REQUEST = exports.HTTP_BAD_REQUEST = 400;
+var HTTP_INTERNAL_SERVER_ERROR = exports.HTTP_INTERNAL_SERVER_ERROR = 500;
 
 /**
  * Public functions
@@ -40,34 +33,44 @@ serenityRouteHelper.prototype.HTTP_INTERNAL_SERVER_ERROR = 500;
  *
  * @param {Object}    req       Express request instance
  * @param {Object}    err       error Object/Array to be add to request instance
- * @param {Number}    errCode   errCode Optional. If errCode is specified than this errCode would take precedance
- *                              over 500 and guessed errCode. The priorites are in following order
- *                              errCode > req.error.code > guessed error code > 500
+ * @param {Number}    errCode   errCode Optional.
  */
-serenityRouteHelper.prototype.addError = function(req, err, errCode) {
+var addError = exports.addError = function(req, err, errCode) {
   req.error = {};
-  var errorCode;
-  console.log('Error:');
-  console.log(err);
 
-  if(err instanceof Array) {   // Sequelize returns array
+  if (err instanceof Array) {   // Sequelize returns array
     req.error.message = err[0].message;
     if (req.error.message.indexOf('violates') > -1 || req.error.message.indexOf('constraint') > -1) {
-      errorCode = this.HTTP_BAD_REQUEST;  // return bad request
+      errCode = HTTP_BAD_REQUEST;  // return bad request
     }
-  } else if (err.errors && err.errors instanceof Array) {
-    req.error.errors = err.errors;
+  } else if (err && err.body) {   // from Swagger API client
+    req.error.message = err.body.content;
+
+    if (err.body.details) {
+      err.error.message = err.body.details;
+    }
+
+    if (err.body.result) {
+      req.error.code = err.body.result.status;
+    }
+
+    if (err.body.value) {
+      req.error.code = err.body.value;
+    }
+
   } else if (err.message) {
     req.error.message = err.message;
     if (req.error.message.indexOf('violates') > -1 || req.error.message.indexOf('constraint') > -1) {
-      errorCode = this.HTTP_BAD_REQUEST;  // return bad request
+      errCode = HTTP_BAD_REQUEST;  // return bad request
     }
+  } else if (err.errors && err.errors instanceof Array) {
+    req.error.errors = err.errors;
   } else if (typeof err === 'string') {  // error from a127 middleware validation error
       req.error.message = err;
   } else {
     req.error.message = 'request failed';
   }
-  req.error.code = errCode || req.error.code || errorCode || this.HTTP_INTERNAL_SERVER_ERROR;
+  req.error.code = errCode || req.error.code || HTTP_INTERNAL_SERVER_ERROR;
 };
 
 /**
@@ -76,10 +79,10 @@ serenityRouteHelper.prototype.addError = function(req, err, errCode) {
  * @param {String}    errMsg    Error message to add
  * @param {Number}    errCode   Error code defaults to 500
  */
-serenityRouteHelper.prototype.addErrorMessage = function(req, errMsg, errCode) {
+exports.addErrorMessage = function(req, errMsg, errCode) {
   req.error = {};
   req.error.message = errMsg;
-  req.error.code = errCode || req.error.code || this.HTTP_INTERNAL_SERVER_ERROR;
+  req.error.code = errCode || req.error.code || HTTP_INTERNAL_SERVER_ERROR;
 };
 
 /**
@@ -89,14 +92,14 @@ serenityRouteHelper.prototype.addErrorMessage = function(req, errMsg, errCode) {
  * @param {Object}    req       Express request instance
  * @param {String}    errMsg    Validation error message
  */
-serenityRouteHelper.prototype.addValidationError = function(req, errMsg) {
+exports.addValidationError = function(req, errMsg) {
   if (!req.error) {
     req.error = {};
   }
   if (!req.error.errors) {
     req.error.errors = [];
   }
-  req.error.code = this.HTTP_BAD_REQUEST;
+  req.error.code = HTTP_BAD_REQUEST;
   var exist = false;
   _.forEach(req.error.errors, function(errorMsg) {
     if(errorMsg.toString().indexOf(errMsg)!==-1){
@@ -114,7 +117,7 @@ serenityRouteHelper.prototype.addValidationError = function(req, errMsg) {
  * @param {Object}    req       Express request instance
  * @param {Object}    res       Express response instance
  */
-serenityRouteHelper.prototype.renderJson = function(req, res) {
+exports.renderJson = function(req, res) {
   if (req.error) {
     if (req.error.errors) {   // validation errors
       res.status(req.error.code).json({
@@ -135,12 +138,12 @@ serenityRouteHelper.prototype.renderJson = function(req, res) {
       });
     }
   } else if (req.data) {
-    res.status(this.HTTP_OK).json(req.data);
+    res.status(HTTP_OK).json(req.data);
   } else {
-    res.status(this.HTTP_NOT_FOUND).json({
+    res.status(HTTP_NOT_FOUND).json({
       result: {
         success: false,
-        status : this.HTTP_NOT_FOUND
+        status : HTTP_NOT_FOUND
       },
       content: 'The resource is not found'
     });
@@ -155,9 +158,9 @@ serenityRouteHelper.prototype.renderJson = function(req, res) {
  * @param {Object}    res       Express response instance
  * @param {Function}  next      the next function
  */
-serenityRouteHelper.prototype.errorHandler = function(err, req, res, next) {
+exports.errorHandler = function(err, req, res, next) {
   if (err) {
-    this.addError(req, err, this.HTTP_BAD_REQUEST);
+    addError(req, err, HTTP_BAD_REQUEST);
   }
   next();
 };
@@ -167,9 +170,16 @@ serenityRouteHelper.prototype.errorHandler = function(err, req, res, next) {
  *
  * @param   refModel    the model object
  */
-serenityRouteHelper.prototype.getRefIdField = function(refModel) {
+exports.getRefIdField = function(refModel) {
   var name = refModel.name;
   return name.charAt(0).toLowerCase() + name.slice(1) + 'Id';
 };
 
-module.exports = serenityRouteHelper;
+/**
+ * This method checks the content-type of request is multipart/form-data.
+ * @param {Object}    req       Express request instance
+ */
+exports.isFormData = function(req) {
+  var type = req.headers['content-type'] || '';
+  return 0 === type.indexOf('multipart/form-data');
+};
