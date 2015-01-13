@@ -7,6 +7,13 @@ This module act as a middleware in express applications and processes the data (
 
 The output format is standardized pre-defined format as per the appirio specifications.
 
+### How to install?
+
+Install via npm and git
+
+```
+npm install git+https://github.com/riteshsangwan/serenity-route-helper.git
+```
 
 ### How to use ?
 
