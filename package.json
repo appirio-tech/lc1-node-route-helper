@@ -6,18 +6,20 @@
   "contributors": [],
   "repository": {
     "type": "git",
-    "url": "https://github.com/riteshsangwan/serenity-route-helper.git"
+    "url": "https://github.com/appirio-tech/lc1-node-route-helper.git"
   },
-  "homepage": "https://github.com/riteshsangwan/serenity-route-helper",
+  "homepage": "https://github.com/appirio-tech/lc1-node-route-helper",
   "keywords": [
-    "serenity"
+    "serenity",
+    "a127"
   ],
   "dependencies": {
     "grunt-cli": "^0.1.13",
     "grunt-contrib-jshint": "^0.10.0",
     "load-grunt-tasks": "^0.4.0",
     "grunt-env": "^0.4.1",
-    "lodash": "^2.4.1"
+    "lodash": "^2.4.1",
+    "common-errors": "^0.4.18"
   },
   "devDependencies": {
     "grunt-mocha-test": "^0.10.2",
@@ -31,5 +33,7 @@
     "Readme.md",
     "index.js"
   ],
-  "scripts": {}
+  "scripts": {
+    "test": "grunt test"
+  }
 }
