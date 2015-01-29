@@ -12,7 +12,7 @@ The output format is standardized pre-defined format as per the appirio specific
 Install via npm and git
 
 ```
-npm install git+https://github.com/riteshsangwan/serenity-route-helper.git
+npm install git+https://github.com/appirio-tech/lc1-node-route-helper.git
 ```
 
 ### How to use ?
@@ -20,7 +20,7 @@ npm install git+https://github.com/riteshsangwan/serenity-route-helper.git
 Add a dependency to serenity-route-helper in package.json
 
 ```
-"serenity-route-helper": "git+ssh://git@gitlab.com:spanhawk/serenity-route-helper.git"
+"lc1-node-route-helper": "git+https://github.com/appirio-tech/lc1-node-route-helper.git"
 ```
 
 Run ```npm install``` to install it.
@@ -28,7 +28,7 @@ Run ```npm install``` to install it.
 You can also do
 
 ```
-npm install git+ssh://git@gitlab.com:spanhawk/serenity-route-helper.git --save
+npm install git+https://github.com/appirio-tech/lc1-node-route-helper.git --save
 ```
 
 The ```--save``` flag automatically add it as dependency in package.json
@@ -37,7 +37,7 @@ Add serenity-route-helper in your code via ```require``` use it.
 
 
 ```
-var routeHelper = require('serenity-route-helper');
+var routeHelper = require('lc1-node-route-helper');
 ```
 
 The module exports an error handler function which can be used as a middleware.
@@ -87,7 +87,7 @@ Property Description
 Sample implementation examples are explained below
 
 ```
-var routeHelper = require('serenity-route-helper');
+var routeHelper = require('lc1-node-route-helper');
 
 // some app.js part
 // add global error handler
@@ -102,7 +102,7 @@ NOTE: Add the renderJson middleware at the end of chain. All the request process
 serenityRouteHelper can be used directly in other files. It exposes middleware functions which can be added to express ```request``` instance anywhere in code
 
 ```
-var routeHelper = require('serenity-route-helper');
+var routeHelper = require('lc1-node-route-helper');
 
 // controller validation
 // some validation logic
