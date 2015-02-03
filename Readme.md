@@ -5,14 +5,14 @@ Common module for serenity applications.
 
 This module act as a middleware in express applications and processes the data (error) in object in express request instance and outputs the json to client.
 
-The output format is standardized pre-defined format as per the appirio specifications.
+The output format is standardized pre-defined format as per the Appirio specifications.
 
 ### How to install?
 
 Install via npm and git
 
 ```
-npm install git+https://github.com/appirio-tech/lc1-node-route-helper.git
+npm install serenity-partial-response-helper
 ```
 
 ### How to use ?
@@ -20,7 +20,7 @@ npm install git+https://github.com/appirio-tech/lc1-node-route-helper.git
 Add a dependency to serenity-route-helper in package.json
 
 ```
-"lc1-node-route-helper": "git+https://github.com/appirio-tech/lc1-node-route-helper.git"
+"lc1-node-route-helper": "serenity-partial-response-helper"
 ```
 
 Run ```npm install``` to install it.
@@ -28,7 +28,7 @@ Run ```npm install``` to install it.
 You can also do
 
 ```
-npm install git+https://github.com/appirio-tech/lc1-node-route-helper.git --save
+npm install serenity-partial-response-helper --save
 ```
 
 The ```--save``` flag automatically add it as dependency in package.json
@@ -37,7 +37,7 @@ Add serenity-route-helper in your code via ```require``` use it.
 
 
 ```
-var routeHelper = require('lc1-node-route-helper');
+var routeHelper = require('serenity-partial-response-helper');
 ```
 
 The module exports an error handler function which can be used as a middleware.
@@ -87,7 +87,7 @@ Property Description
 Sample implementation examples are explained below
 
 ```
-var routeHelper = require('lc1-node-route-helper');
+var routeHelper = require('serenity-partial-response-helper');
 
 // some app.js part
 // add global error handler
@@ -102,7 +102,7 @@ NOTE: Add the renderJson middleware at the end of chain. All the request process
 serenityRouteHelper can be used directly in other files. It exposes middleware functions which can be added to express ```request``` instance anywhere in code
 
 ```
-var routeHelper = require('lc1-node-route-helper');
+var routeHelper = require('serenity-partial-response-helper');
 
 // controller validation
 // some validation logic
