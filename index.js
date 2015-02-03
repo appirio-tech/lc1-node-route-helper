@@ -10,6 +10,7 @@
 'use strict';
 
 var errors = require('common-errors');
+var middleware = require('./middleware');
 
 
 exports.createError = function(message, statusCode) {
@@ -28,3 +29,5 @@ exports.getRefIdField = function(refModel) {
   var name = refModel.name;
   return name.charAt(0).toLowerCase() + name.slice(1) + 'Id';
 };
+
+exports.middleware = middleware;
