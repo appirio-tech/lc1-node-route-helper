@@ -36,7 +36,6 @@ exports.renderJson = function(req, res) {
  * @param next the next
  */
 exports.errorHandler = function(err, req, res, next) {
-
   if (err) {
     if (err.code) {   // error from a127
       if (err.failedValidation) {
@@ -44,6 +43,9 @@ exports.errorHandler = function(err, req, res, next) {
       } else {
         err.statusCode = 500;
       }
+    } else if (err.name == "NotFoundError") {  // validation error
+      err.statusCode = 404;
+      err.message = _.pluck(_.values(err.errors), 'message').join('. ');
     } else if (err.errors) {  // validation error
       err.statusCode = 400;
       err.message = _.pluck(_.values(err.errors), 'message').join('. ');
