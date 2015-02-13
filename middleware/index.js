@@ -56,9 +56,9 @@ exports.errorHandler = function(err, req, res, next) {
     res.status(err.statusCode).json({
       result: {
         success: false,
-        status: err.statusCode
-      },
-      content: err.message
+        status: err.statusCode,
+        content: err.message
+      }
     });
   } else {
     next();
